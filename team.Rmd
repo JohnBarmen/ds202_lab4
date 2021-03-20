@@ -1,0 +1,143 @@
+---
+title: "Lab 4"
+author: "John Barmen"
+date: "3/19/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r loading}
+library(readxl)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(stringr)
+
+defense <- read_excel('/Users/jrdba/OneDrive/Documents/DS202/ds202_lab4/slides/cyclonesFootball2020.xlsx', sheet='Defensive')
+names(defense)<-str_replace_all(names(defense), c(" " = "." , "," = "", "-" = "_" ))
+str(defense)
+offensive <- read_excel('/Users/jrdba/OneDrive/Documents/DS202/ds202_lab4/slides/cyclonesFootball2020.xlsx', sheet='Offensive')
+names(offensive)<-str_replace_all(names(offensive), c(" " = "." , "," = "", "-" = "_" ))
+str(offensive)
+biography <- read_excel('/Users/jrdba/OneDrive/Documents/DS202/ds202_lab4/slides/cyclonesFootball2020.xlsx', sheet='Biography')
+names(biography)<-str_replace_all(names(biography), c(" " = "." , "," = "", "-" = "_"))
+str(biography)
+```
+
+### Part 1
+1)
+```{r P1.1}
+defClean <- defense
+offClean <- offensive
+bioClean <- biography
+
+defClean$Name <- factor(defense$Name)
+offClean$Name <- factor(offensive$Name)
+bioClean$Name <- factor(biography$Name)
+
+defClean$Opponent_Opponent <- factor(defense$Opponent_Opponent)
+offClean$Opponent_Opponent <- factor(offensive$Opponent_Opponent)
+
+```
+
+2)
+```{r P1.2}
+defClean$Tackles_Solo <- as.numeric(defense$Tackles_Solo)
+defClean$Tackles_ASST <- as.numeric(defense$Tackles_ASST)
+defClean$Tackles_TFL <- as.numeric(defense$Tackles_TFL)
+defClean$Tackles_Sack <- as.numeric(defense$Tackles_Sack)
+defClean$Turnover_FF <- as.numeric(defense$Turnover_FF)
+defClean$Turnover_FR <- as.numeric(defense$Turnover_FR)
+defClean$Turnover_INT <- as.numeric(defense$Turnover_INT)
+defClean$Pass_QBH <- as.numeric(defense$Pass_QBH)
+defClean$Pass_PB <- as.numeric(defense$Pass_PB)
+
+offClean$Receiving_REC <- as.numeric(offensive$Receiving_REC)
+offClean$Receiving_YDS <- as.numeric(offensive$Receiving_YDS)
+offClean$Receiving_TD <- as.numeric(offensive$Receiving_TD)
+offClean$Rushing_ATT <- as.numeric(offensive$Rushing_ATT)
+offClean$Rushing_YDS <- as.numeric(offensive$Rushing_YDS)
+offClean$Rushing_TD <- as.numeric(offensive$Rushing_TD)
+offClean$Passing_CMP_ATT <- as.numeric(offensive$Passing_CMP_ATT)
+offClean$Passing_YDS <- as.numeric(offensive$Passing_YDS)
+offClean$Passing_TD <- as.numeric(offensive$Passing_TD)
+offClean$Passing_INT <- as.numeric(offensive$Passing_INT)
+
+bioClean$Weight <- as.numeric(biography$Weight)
+```
+
+3)
+```{r P1.3}
+bioClean$Height <- sapply(strsplit(as.character(bioClean$Height),"-"),
+                    function(x){12*as.numeric(x[1]) + as.numeric(x[2])})
+
+str(defClean)
+str(offClean)
+str(bioClean)
+```
+
+### Part 2
+1)
+```{r P2.1}
+offClean <- offClean %>%
+  pivot_longer(cols = (!Name & !Opponent_Opponent),
+               values_to = "stat")
+
+```
+
+2)
+```{r P2.2}
+
+```
+
+3)
+```{r P2.3}
+
+
+str(offClean)
+```
+
+4)
+```{r P2.4}
+bioClean <- bioClean %>% separate(Hometown, c("Homecity", "Homestate"), sep = ", ")
+str(bioClean)
+```
+
+5)
+```{r P2.5}
+
+```
+
+
+### Part 3
+1)
+```{r P3.1}
+
+```
+
+2)
+```{r P3.2}
+
+```
+
+3)
+```{r P3.3}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
